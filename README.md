@@ -1,5 +1,7 @@
 # IERE
-The code of the paper "Boosting Cross-Domain Semi-supervised Medical Image Segmentation with Internal and External Regularizations"
+
+# Introduction
+Official code of the paper "Boosting Cross-Domain Semi-supervised Medical Image Segmentation with Internal and External Regularizations"
 
 # Usage
 We provide code and model for Prostate dataset.
@@ -15,3 +17,5 @@ To test a model,
 ```python
 python inference_prostate.py # for Prostate test
 ```
+## Acknowledgements
+Our code is largely based on [SSL-MedSeg](https://github.com/kaland313/SSL-MedSeg.git) and [BCP](https://github.com/DeepMed-Lab-ECNU/BCP.git). Thanks for these authors' valuable work. 
