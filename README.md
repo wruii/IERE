@@ -1,9 +1,9 @@
 # IERE
 
-# Introduction
+## Introduction
 Official code of the paper "Boosting Cross-Domain Semi-supervised Medical Image Segmentation with Internal and External Regularizations"
 
-# Usage
+## Usage
 We provide code and model for Prostate dataset.
 Model could be got at [pretrain_model](https://pan.quark.cn/s/90b512bbd4ba)
 
