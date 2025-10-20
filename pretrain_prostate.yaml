@@ -1,0 +1,53 @@
+seed: 12
+
+num_workers: 16
+experiment_name: "prostate"
+# Note: experiment_name is interptreted as a format string with all other config options: e.g {optimizer_lr}
+# More complex examples: "Swp_lr{optimizer_lr}_{loss}_{scheduler_type}"
+# Swp_Subset{subset_ratio}_{model_encoder_weights:.18}_oversampling
+
+wandb_tag: ""
+
+dataset: "prostate"
+dataset_root: '../../DeSAM-main/work_dir/train_embeddings/npz_files_vit_h'
+split_file: '../../DeSAM-main/work_dir/raw_data/prostate_patientid.csv'
+artifacts_root: "prostate/result_folder"
+out_channel: 2  # unlabel branch
+mask_ratio: 0.66
+
+trainer:
+  gpus: 1
+  max_epochs: 1000
+  benchmark: True
+  precision: 16
+  gradient_clip_val: 5.0
+
+model:
+  weights: False # finetune
+  encoder_name: "tu-resnet50"
+  encoder_weights: "byol_acdc_backbone_last.pth"
+  freeze_encoder_weights_epochs : 0
+  pretrained_decoder: False
+
+bce: 1.0
+iou: 1.0
+ram: 0.0
+center: 1
+dynamic: False
+distill: 0.0
+
+scheduler:
+  type: pl_bolts.optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+  warmup_epochs: 10
+  max_epochs: 1000
+  warmup_start_lr: 1.0e-6
+
+loss: "JaccardLoss"
+
+batch_size: 30
+sub_bs: 15
+
+optimizer:
+  type: torch.optim.Adam
+  lr: 0.0001
+

@@ -1,0 +1,62 @@
+seed: 42
+
+num_workers: 1
+experiment_name: "prostate"
+# Note: experiment_name is interptreted as a format string with all other config options: e.g {optimizer_lr}
+# More complex examples: "Swp_lr{optimizer_lr}_{loss}_{scheduler_type}"
+# Swp_Subset{subset_ratio}_{model_encoder_weights:.18}_oversampling
+
+wandb_tag: ""
+#更换中心需更改Center_index，两处sam checkpoint，预训练模型，inference center2处, batchsize, lablesnum
+dataset: "prostate"
+dataset_root: '../../DeSAM-main/work_dir/train_embeddings/npz_files_vit_h'
+split_file: '../../DeSAM-main/work_dir/raw_data/prostate_patientid.csv'
+artifacts_root: "prostate/result_folder"
+out_channel: 2  # unlabel branch
+u_weight: 0.5
+mask_ratio: 0.66
+
+trainer:
+  gpus: 1
+  max_epochs: 628
+  benchmark: True
+  precision: 16
+  gradient_clip_val: 5.0
+
+sam:
+  used: True
+  image_size: 256
+  model_type: vit_b
+  sam_checkpoint: "../SAM-Med2D-main/workdir/models/sam-med2d-ab-26/epoch20_sam.pth"
+
+  encoder_adapter: True
+
+model:
+  weights: True # finetune
+  encoder_name: "tu-resnet50"
+  encoder_weights: "byol_acdc_backbone_last.pth"
+  freeze_encoder_weights_epochs : 0
+  pretrained_decoder: False
+
+bce: 1.0
+sam_bce: 0.5
+ram: 0.5
+iou: 1.0
+distill: 0.0
+dynamic: False
+
+scheduler:
+  type: torch.optim.lr_scheduler.CosineAnnealingWarmRestarts
+  T_0: 10
+  T_mult: 2
+
+loss: "JaccardLoss"
+
+batch_size: 96
+label_num: 48
+labeled_bs: 48
+
+optimizer:
+  type: torch.optim.SGD
+  lr: 0.01
+  momentum: 0.9
